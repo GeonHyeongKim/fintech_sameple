@@ -1,30 +1,39 @@
-var cars01 = []
-var car01 = {
+var car = {
     name: "sonata",
     ph: "500ph",
-    start: function() {
-        console.log("egine is starting");
+    start: function () {
+      console.log("engine is starting");
     },
-    stop: function() {
-        console.log("egine is stoped");
+    stop: function () {
+      console.log("engine is stoped");
     },
-};
-
-var car02 = {
-    name: "BMW",
-    ph: "600ph",
-    start: function() {
-        console.log("egine is starting");
+  };
+  var car2 = {
+    name: "bmw",
+    ph: "500ph",
+    start: function () {
+      console.log("engine is starting");
     },
-    stop: function() {
-        console.log("egine is stoped");
+    stop: function () {
+      console.log("engine is stoped");
     },
-};
+  };
+  var car3 = {
+    name: "fiat",
+    ph: "500ph",
+    start: function () {
+      console.log("engine is starting");
+    },
+    stop: function () {
+      console.log("engine is stoped");
+    },
+  };
 
-console.log(car01);
-console.log(car02);
+  var cars = [car, car2, car3];
 
-cars01[0] = car01;
-cars01[1] = car02;
+  //#work2 자동차 배열을 확인한 뒤 bmw 라는 자동차가 있으면 hello 출력해주세요 for / if 활용
+function findCar(carname) {
+    
+}
 
-console.log(cars01[1].name);
+  console.log(cars);
