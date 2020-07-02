@@ -8,7 +8,7 @@ var car01 = {
     stop: function() {
         console.log("egine is stoped");
     },
-}
+};
 
 var car02 = {
     name: "BMW",
@@ -19,7 +19,7 @@ var car02 = {
     stop: function() {
         console.log("egine is stoped");
     },
-}
+};
 
 console.log(car01);
 console.log(car02);
