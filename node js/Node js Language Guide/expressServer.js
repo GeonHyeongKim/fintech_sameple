@@ -7,6 +7,8 @@ app.set("view engine", "ejs"); // ejs 사용 코드 추가
 app.use(express.json()); // // 리퀘스트 바디 허용 코드 추가
 app.use(express.urlencoded({ extended: false })); // data를 받아 올수 있도록 허용
 
+app.use(express.static(__dirname + '/public')); // public이라는 folder를 외부에 공개 하겠다
+
 app.get("/", function (req, res) {
   res.send("Hello World");
 });
@@ -26,6 +28,10 @@ app.get("/ejsTest", function (req, res) { // ejs 뷰파일 및 라우터 추가
 app.get("/inputTest", function (req, res) {
   res.render("inputTest");
 });
+
+app.get("/designTest", function (req, res) {
+    res.render("design");
+  });
 
 // 비동기 통신 - 서버 프론트 통신 ajax
 // 로그인 정보 전달 ajax 코드 및 라우터 완성
