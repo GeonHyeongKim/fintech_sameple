@@ -52,8 +52,8 @@
                             <a href="javascript:void(0);"><img src="img/content/icons/9.png"
                                     alt=""><strong>Login/Register</strong> <span class="fa fa-angle-down"></span></a>
                             <ul>
-                                <li><a href="login.html" data-loader="show">Login</a></li>
-                                <li class="active"><a href="signup.html" data-loader="show">Register</a></li>
+                                <li class="active"><a href="login.html" data-loader="show">Login</a></li>
+                                <li><a href="signup.html" data-loader="show">Register</a></li>
                                 <li><a href="forgot-password.html" data-loader="show">Forgot Password</a></li>
                             </ul>
                         </li>
@@ -106,7 +106,7 @@
             <header>
                 <!-- extra class no-background -->
                 <a class="go-back-link" href="javascript:history.back();"><i class="fa fa-arrow-left"></i></a>
-                <h1 class="page-title">SIGN UP</h1>
+                <h1 class="page-title">LOGIN</h1>
                 <div class="navi-menu-button">
                     <em></em>
                     <em></em>
@@ -119,47 +119,24 @@
                 <div class="container">
                     <div class="form-divider"></div>
                     <div class="form-divider"></div>
-                    <div class="form-label-divider"><span>OR</span></div>
-                    <div class="form-divider"></div>
                     <div class="form-row-group with-icons">
                         <div class="form-row no-padding">
-                            <i class="fa fa-user"></i>
-                            <input type="text" id="userName" class="form-element" placeholder="Username" value="">
-                        </div>
-                        <div class="form-row no-padding">
                             <i class="fa fa-envelope"></i>
-                            <input type="email" id="userEmail" class="form-element" placeholder="Email" value="">
+                            <input type="email" id="userEmail" name="aaa" class="form-element"
+                                placeholder="Username or Email">
                         </div>
                         <div class="form-row no-padding">
                             <i class="fa fa-lock"></i>
-                            <input type="password" id="userPassword" class="form-element" placeholder="Password"
-                                value="">
-                        </div>
-                        <div class="form-row no-padding">
-                            <i class="fa fa-user"></i>
-                            <input type="text" id="userAccessToken" class="form-element" placeholder="accessToken"
-                                value="">
-                        </div>
-                        <div class="form-row no-padding">
-                            <i class="fa fa-user"></i>
-                            <input type="text" id="userRefreshToken" class="form-element" placeholder="refreshToken"
-                                value="">
-                        </div>
-                        <div class="form-row no-padding">
-                            <i class="fa fa-user"></i>
-                            <input type="text" id="userSeqNo" class="form-element" placeholder="userseqno" value="">
+                            <input type="password" id="userPassword" name="aaa" class="form-element"
+                                placeholder="Password">
                         </div>
                     </div>
                     <div class="form-divider"></div>
                     <div class="form-row">
-                        <button id="authBtn" class="button circle block blue mb-15"> <i class="fa fa-user"></i>
-                            인증받기</button>
-                    </div>
-                    <div class="form-row">
-                        <button id="signupBtn" class="button circle block orange">Sign Up</button>
+                        <button type="button" id="loginBtn" class="button circle block orange">Login</a>
                     </div>
                     <div class="form-row txt-center mt-15">
-                        Already have an account? <a href="login.html" data-loader="show">Login</a>
+                        Don't you have an account yet? <a href="/signup">Sign Up</a>
                     </div>
                 </div>
             </main>
@@ -179,40 +156,24 @@
     <!-- Template global script file. requared all pages -->
     <script src="js/global.script.js"></script>
     <script>
-        $("#authBtn").click(function () {
-            var tmpWindow = window.open("about:blank"); //#공부1 : window를 여는데 메모리에 연결
-            //#공부2 : client_id 본인의 것으로 바꿔야 한다. 
-            tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id=md8ZEKlZ3OVjN5A8kEtXUBPahUHWU8cOL4oCe0Z2&redirect_uri=http://localhost:3000/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0";
-        });
-        $("#signupBtn").click(function () {
-            var userName = $("#userName").val();
-            var userEmail = $("#userEmail").val();
-            var userPassword = $("#userPassword").val();
-            var userAccessToken = $("#userAccessToken").val();
-            var userRefreshToken = $("#userRefreshToken").val();
-            var userSeqNo = $("#userSeqNo").val();
-            $.ajax({
-                url: "/signup",
-                type: "POST",
-                data: {
-                    userName: userName,
-                    userEmail: userEmail,
-                    userPassword: userPassword,
-                    userAccessToken: userAccessToken,
-                    userRefreshToken: userRefreshToken,
-                    userSeqNo: userSeqNo,
-                },
-                success: function (data) {
-                    if (data == "1") {
-                        alert("signup success!!!!");
-                        window.location.href = "/login";
-                    } else {
-                        alert("signup fail....");
-                    }
-                },
-            });
+        $("#loginBtn").click(function () {
+        })
+        // #ajax 아이디 패스워드를 post 방식으로 '/login' 라우터에 데이터를 전송
+        var userEmail = $("#userEmail").val();
+        var userPassword = $("#userPassword").val();
+        $.ajax({
+            url: "/login",
+            type: "POST",
+            data: {
+                userEmail: userEmail,
+                userPassword: userPassword,
+            },
+            success: function (data) {
+                console.log(data)
+            },
         });
     </script>
+
 </body>
 
 </html>
