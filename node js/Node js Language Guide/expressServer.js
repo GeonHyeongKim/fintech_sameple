@@ -39,6 +39,23 @@ app.get("/signup", function (req, res) { // 오픈 뱅킹 API 로그인
 
 app.get("/authResult", function (req, res) { // 오픈 뱅킹 API 로그인
   res.send("!");
+  var option = { // object이기 때문에 중괄호!
+    method: "POST",
+    url: "https://testapi.openbanking.or.kr/oauth/2.0/token",
+    headers: {
+      "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+
+    //form 형태는 form / 리쿼스트링 형태는 qs / json 형태는 json ***
+    form: {
+      code: authCode,
+      client_id: "md8ZEKlZ3OVjN5A8kEtXUBPahUHWU8cOL4oCe0Z2",
+      //#자기 키로 스크릿 변경
+      client_secret: "5pRQ2f3n62RtI1TNj4x195tX4OpSiXhDzWv5Z3FV",
+      redirect_uri: "http://localhost:3000/authResult",
+      grant_type: "authorization_code"
+    },
+  };
 });
 
 // 비동기 통신 - 서버 프론트 통신 ajax
