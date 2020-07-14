@@ -62,7 +62,7 @@ app.get("/authResult", function (req, res) { // 인증 결과
   request(option, function (error, response, body) {
     var accessRequestResult = JSON.parse(body); // 데이터
     console.log(accessRequestResult);
-    res.render("resultChild", { data: accessRequestResult });
+    res.render("resultChild", { data: accessRequestResult});
   });
 });
 
@@ -75,6 +75,10 @@ app.post("/getLoginData", function (req, res) {
   console.log(userId, userPassword);
 
   res.json(userId + "분의 로그인 성공입니다."); // 서버 프론트 통신 ajax 완성
+});
+
+app.post("/sginup", function (req, res) {
+  console.log(req, body);
 });
 
 app.listen(3000, function () {
