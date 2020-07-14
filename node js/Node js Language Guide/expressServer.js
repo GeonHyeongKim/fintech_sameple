@@ -37,6 +37,10 @@ app.get("/signup", function (req, res) { // 오픈 뱅킹 API 로그인
   res.render("signup");
 });
 
+app.get("/authResult", function (req, res) { // 오픈 뱅킹 API 로그인
+  res.send("!");
+});
+
 // 비동기 통신 - 서버 프론트 통신 ajax
 // 로그인 정보 전달 ajax 코드 및 라우터 완성
 app.post("/getLoginData", function (req, res) {

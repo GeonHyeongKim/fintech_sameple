@@ -178,6 +178,13 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <!-- Template global script file. requared all pages -->
     <script src="js/global.script.js"></script>
+    <script>
+        $("#authBtn").click(function () {
+            var tmpWindow = window.open("about:blank"); //#공부1 : window를 여는데 메모리에 연결
+            //#공부2 : client_id 본인의 것으로 바꿔야 한다. 
+            tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id=md8ZEKlZ3OVjN5A8kEtXUBPahUHWU8cOL4oCe0Z2&redirect_uri=http://localhost:3000/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0";
+        });
+    </script>
 </body>
 
 </html>
