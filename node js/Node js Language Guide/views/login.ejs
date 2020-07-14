@@ -5,18 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <title>Crypto Mobile Template</title>
+
     <!-- Google font file. If you want you can change. -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,900" rel="stylesheet">
+
     <!-- Fontawesome font file css -->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+
     <!-- Template global css file. Requared all pages -->
     <link rel="stylesheet" type="text/css" href="css/global.style.css">
 </head>
 
 <body>
+
     <div class="wrapper">
         <div class="nav-menu">
             <nav class="menu">
+
                 <!-- Menu navigation start -->
                 <div class="nav-container">
                     <ul class="main-menu">
@@ -57,6 +62,7 @@
                                 <li><a href="forgot-password.html" data-loader="show">Forgot Password</a></li>
                             </ul>
                         </li>
+
                         <li>
                             <a href="javascript:void(0);"><img src="img/content/icons/8.png" alt="">
                                 <strong>Wizards</strong> <span class="fa fa-angle-down"></span></a>
@@ -116,9 +122,12 @@
             <!-- Header area end -->
             <!-- Page content start -->
             <main>
+
                 <div class="container">
                     <div class="form-divider"></div>
+
                     <div class="form-divider"></div>
+
                     <div class="form-row-group with-icons">
                         <div class="form-row no-padding">
                             <i class="fa fa-envelope"></i>
@@ -131,18 +140,24 @@
                                 placeholder="Password">
                         </div>
                     </div>
+
                     <div class="form-divider"></div>
+
                     <div class="form-row">
                         <button type="button" id="loginBtn" class="button circle block orange">Login</a>
                     </div>
+
                     <div class="form-row txt-center mt-15">
                         Don't you have an account yet? <a href="/signup">Sign Up</a>
                     </div>
+
                 </div>
             </main>
             <!-- Page content end -->
         </div>
     </div>
+
+
     <!--Page loader DOM Elements. Requared all pages-->
     <div class="sweet-loader">
         <div class="box">
@@ -151,27 +166,29 @@
             <div class="circle3"></div>
         </div>
     </div>
+
     <!-- JQuery library file. requared all pages -->
     <script src="js/jquery-3.2.1.min.js"></script>
+
     <!-- Template global script file. requared all pages -->
     <script src="js/global.script.js"></script>
     <script>
         $("#loginBtn").click(function () {
+            // #ajax 아이디 패스워드를 post 방식으로 '/login' 라우터에 데이터를 전송
+            var userEmail = $("#userEmail").val();
+            var userPassword = $("#userPassword").val();
+            $.ajax({
+                url: "/login",
+                type: "POST",
+                data: {
+                    userEmail: userEmail,
+                    userPassword: userPassword,
+                },
+                success: function (data) {
+                    console.log(data)
+                },
+            });
         })
-        // #ajax 아이디 패스워드를 post 방식으로 '/login' 라우터에 데이터를 전송
-        var userEmail = $("#userEmail").val();
-        var userPassword = $("#userPassword").val();
-        $.ajax({
-            url: "/login",
-            type: "POST",
-            data: {
-                userEmail: userEmail,
-                userPassword: userPassword,
-            },
-            success: function (data) {
-                console.log(data)
-            },
-        });
     </script>
 
 </body>
