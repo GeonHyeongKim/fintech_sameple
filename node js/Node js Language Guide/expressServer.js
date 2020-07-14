@@ -2,6 +2,16 @@ const express = require("express");
 const app = express();
 const request = require("request"); // 모듈 import, request 가져오기
 
+var mysql = require('mysql'); // DB 연동
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '1183',
+  database: 'fintech'
+});
+
+connection.connect();
+
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs"); // ejs 사용 코드 추가
 
@@ -45,7 +55,7 @@ app.get("/authResult", function (req, res) { // 인증 결과
     method: "POST",
     url: "https://testapi.openbanking.or.kr/oauth/2.0/token",
     headers: {
-      "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
     },
 
     //form 형태는 form / 리쿼스트링 형태는 qs / json 형태는 json ***
@@ -62,7 +72,7 @@ app.get("/authResult", function (req, res) { // 인증 결과
   request(option, function (error, response, body) {
     var accessRequestResult = JSON.parse(body); // 데이터
     console.log(accessRequestResult);
-    res.render("resultChild", { data: accessRequestResult});
+    res.render("resultChild", { data: accessRequestResult });
   });
 });
 
@@ -77,8 +87,14 @@ app.post("/getLoginData", function (req, res) {
   res.json(userId + "분의 로그인 성공입니다."); // 서버 프론트 통신 ajax 완성
 });
 
-app.post("/sginup", function (req, res) {
-  console.log(req, body);
+app.post("/signup", function (req, res) {
+  console.log(req.body);
+  var sql =
+    "INSERT INTO `user` (`name`, `email`, `password`, `accesstoken`, `refreshtoken`, `userseqno`) VALUES (?, ?, ?, ?, ?, ?)";
+  connection.query(sql, [], function (error, results, fields) {
+    if (error) throw error;
+    console.log("The solution is: ", results);
+  });
 });
 
 app.listen(3000, function () {
