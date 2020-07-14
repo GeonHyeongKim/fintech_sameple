@@ -60,8 +60,9 @@ app.get("/authResult", function (req, res) { // 인증 결과
   };
 
   request(option, function (error, response, body) {
-    console.log(body);
-    res.json(body);
+    var accessRequestResult = JSON.parse(body); // 데이터
+    console.log(accessRequestResult);
+    res.render("resultChild", { data: accessRequestResult });
   });
 });
 
