@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const request = require("request"); // request 가져오기
+const request = require("request"); // 모듈 import, request 가져오기
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs"); // ejs 사용 코드 추가
