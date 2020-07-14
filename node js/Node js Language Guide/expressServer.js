@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.set("views", __dirname + "/views"); 
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs"); // ejs 사용 코드 추가
 
 app.use(express.json()); // // 리퀘스트 바디 허용 코드 추가
@@ -30,8 +30,12 @@ app.get("/inputTest", function (req, res) {
 });
 
 app.get("/designTest", function (req, res) {
-    res.render("design");
-  });
+  res.render("design");
+});
+
+app.get("/signup", function (req, res) { // 오픈 뱅킹 API 로그인
+  res.render("signup");
+});
 
 // 비동기 통신 - 서버 프론트 통신 ajax
 // 로그인 정보 전달 ajax 코드 및 라우터 완성
