@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const request = require("request"); // request 가져오기
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs"); // ejs 사용 코드 추가
@@ -37,8 +38,9 @@ app.get("/signup", function (req, res) { // 오픈 뱅킹 API 로그인
   res.render("signup");
 });
 
-app.get("/authResult", function (req, res) { // 오픈 뱅킹 API 로그인
-  res.send("!");
+app.get("/authResult", function (req, res) { // 인증 결과
+  var authCode = req.query.code;
+  console.log('인증코드 : ', authCode); // 인증코드 보여주기
   var option = { // object이기 때문에 중괄호!
     method: "POST",
     url: "https://testapi.openbanking.or.kr/oauth/2.0/token",
@@ -56,6 +58,11 @@ app.get("/authResult", function (req, res) { // 오픈 뱅킹 API 로그인
       grant_type: "authorization_code"
     },
   };
+
+  request(option, function (error, response, body) {
+    console.log(body);
+    res.json(body);
+  });
 });
 
 // 비동기 통신 - 서버 프론트 통신 ajax
