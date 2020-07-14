@@ -98,17 +98,7 @@ app.post("/signup", function (req, res) {
 
   var sql =
     "INSERT INTO `user` (`name`, `email`, `password`, `accesstoken`, `refreshtoken`, `userseqno`) VALUES (?, ?, ?, ?, ?, ?)";
-  connection.query(
-    sql,
-    [
-      userName,
-      userEmail,
-      userPassword,
-      userAccessToken,
-      userRefreshToken,
-      userSeqNo,
-    ],
-    function (error, results, fields) {
+  connection.query(sql, [userName, userEmail, userPassword, userAccessToken, userRefreshToken, userSeqNo,], function (error, results, fields) {
       if (error) throw error;
       else {
         console.log("sql :", this.sql);
