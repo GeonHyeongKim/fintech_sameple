@@ -43,6 +43,10 @@ app.get("/balance", function (req, res) {
   res.render("balance");
 });
 
+app.get("/transactionList", function (req, res) {
+  res.render("transactionList");
+});
+
 app.get("/authResult", function (req, res) { // 인증 결과
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode); // 인증코드 보여주기
@@ -175,21 +179,11 @@ app.post("/balance", auth, function (req, res) {
   var userId = req.decoded.userId;
   var fin_use_num = req.body.fin_use_num;
   var sql = "SELECT * FROM user WHERE id = ?";
-  var countnum = Math.floor(Math.random() * 1000000000) + 1; // random
+  var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "T991641630U" + countnum; //이용기과번호 본인것 입력
 
-  let today = new Date();
-  let year = today.getFullYear();
-  let month = ("0" + (today.getMonth() + 1)).slice(-2) // 0 ~ 11
-  let day = ("0" + today.getDate()).slice(-2);
-  let hours = ("00" + today.getHours()).slice(-2) // 시
-  let minutes = ("00" + today.getMinutes()).slice(-2);  // 분
-  let seconds = ("00" + today.getSeconds()).slice(-2);  // 초
-  let tranDime = "" + year + month + day + hours + minutes + seconds;
-  
   console.log("유저 아이디, 핀테크 번호: ", userId, fin_use_num)
   console.log("transId: ", transId);
-  console.log("tran_dtime: ", tranDime);
 
   connection.query(sql, [userId], function (err, results) {
     if (err) {
@@ -207,7 +201,7 @@ app.post("/balance", auth, function (req, res) {
         qs: {
           bank_tran_id: transId,
           fintech_use_num: fin_use_num,
-          tran_dtime: tranDime,
+          tran_dtime: "20200714142907",
         },
       };
 
@@ -220,6 +214,58 @@ app.post("/balance", auth, function (req, res) {
   });
 });
 
+app.post("/transactionList", auth, function (req, res) {
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num;
+  console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+
+  var countnum = Math.floor(Math.random() * 1000000000) + 1;
+  var transId = "T991641630U" + countnum; //이용기과번호 본인것 입력
+  var sql = "SELECT * FROM user WHERE id = ?";
+
+  connection.query(sql, [userId], function (err, results) {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      console.log(("list 에서 조회한 개인 값 :", results));
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/account/transaction_list/fin_num",
+        headers: {
+          Authorization: "Bearer " + results[0].accesstoken,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          bank_tran_id: transId,
+          fintech_use_num: fin_use_num,
+          inquiry_type: "A",
+          inquiry_base: "D",
+          from_date: "20190101",
+          to_date: "20190101",
+          sort_order: "D",
+          tran_dtime: "20200714142907",
+        },
+      };
+      request(option, function (error, response, body) {
+        var listResult = JSON.parse(body);
+        console.log(listResult);
+        res.json(listResult);
+      });
+    }
+  });
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
+
+  // let today = new Date();
+  // let year = today.getFullYear();
+  // let month = ("0" + (today.getMonth() + 1)).slice(-2) // 0 ~ 11
+  // let day = ("0" + today.getDate()).slice(-2);
+  // let hours = ("00" + today.getHours()).slice(-2) // 시
+  // let minutes = ("00" + today.getMinutes()).slice(-2);  // 분
+  // let seconds = ("00" + today.getSeconds()).slice(-2);  // 초
+  // let tranDime = "" + year + month + day + hours + minutes + seconds;
