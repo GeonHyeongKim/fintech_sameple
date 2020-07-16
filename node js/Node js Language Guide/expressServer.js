@@ -54,7 +54,8 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/authTest", auth, function (req, res) {
-  res.json("환영합니다. 우리 고객님")
+  console.log(req.decoded);
+  res.json("환영합니다 우리 고객님");
 });
 
 app.get("/main", function (req, res) {
