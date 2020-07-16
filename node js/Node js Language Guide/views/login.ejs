@@ -177,6 +177,7 @@
             // #ajax 아이디 패스워드를 post 방식으로 '/login' 라우터에 데이터를 전송
             var userEmail = $("#userEmail").val();
             var userPassword = $("#userPassword").val();
+
             $.ajax({
                 url: "/login",
                 type: "POST",
@@ -186,6 +187,8 @@
                 },
                 success: function (data) {
                     console.log(data)
+                    sessionStorage.setItem('ourToken', data)
+                    window.location.href = "/main"
                 },
             });
         })

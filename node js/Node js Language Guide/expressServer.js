@@ -57,6 +57,14 @@ app.get("/authTest", auth, function (req, res) {
   res.json("환영합니다. 우리 고객님")
 });
 
+app.get("/main", function (req, res) {
+  res.render("main");
+});
+
+// app.get("/list", auth, function (req, res) {
+//   res.json("사용자 정보 조회")
+// });
+
 app.get("/authResult", function (req, res) { // 인증 결과
   var authCode = req.query.code;
   console.log('인증코드 : ', authCode); // 인증코드 보여주기
@@ -153,6 +161,29 @@ app.post("/login", function (req, res) {
         }
       }
     }
+  });
+});
+
+app.post('/list', function (req, res) {
+  var option = { // object이기 때문에 중괄호!
+    method: "Get",
+    url: "https://testapi.openbanking.or.kr/v2.0/user/me",
+    headers: {
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAwNzYwNTU5Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2MDI0ODA1NDgsImp0aSI6IjA0Yzc5M2JlLTk4Y2UtNDE2OS04M2Y1LTA1M2Q2ZTJmNDA5OCJ9.Lt_WG-QFvSaHKpuydI2ByESjijIuhFEC2ACuD7ew8gg",
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+
+    //form 형태는 form / 리쿼스트링 형태는 qs / json 형태는 json ***
+    qs: {
+      user_seq_no: "1100760559",
+      //#자기 키로 시크릿 변경
+    },
+  };
+
+  request(option, function (erorr, response, body) {
+    var listResult = JSON.parse(body);
+    console.log(listResult);
+    res.json(listResult);
   });
 });
 
