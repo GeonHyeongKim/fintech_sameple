@@ -51,6 +51,10 @@ app.get("/qrcode", function (req, res) {
   res.render("qrcode");
 });
 
+app.get("/qrreader", function (req, res) {
+  res.render("qrreader");
+});
+
 app.get("/authResult", function (req, res) { // 인증 결과
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode); // 인증코드 보여주기
