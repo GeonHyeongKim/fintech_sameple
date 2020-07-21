@@ -266,13 +266,16 @@ app.post("/transactionList", auth, function (req, res) {
 });
 
 app.post("/withdraw", auth, function (req, res) {
-  // 출금이체 코드 작성
+  // 출금이체 request 요청 코드 작성
   var userId = req.decoded.userId;
   var fin_use_num = req.body.fin_use_num;
+  var amount = req.body.amount;
+  var to_fin_use_num = req.body.to_fin_use_num;
+  console.log("받아온 데이터", userId, fin_use_num, amount, to_fin_use_num);
+
   var sql = "SELECT * FROM user WHERE id = ?";
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "T991641630U" + countnum; //이용기과번호 본인것 입력
-
   console.log("유저 아이디, 핀테크 번호: ", userId, fin_use_num)
   console.log("transId: ", transId);
 
@@ -286,20 +289,31 @@ app.post("/withdraw", auth, function (req, res) {
         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
         headers: {
           Authorization: "Bearer " + results[0].accesstoken,
-          "Content-Type": "application/json; charset=UTF-8",
+          "Content-Type": "application/json",
         },
         //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
-        qs: {
+        json: {
           bank_tran_id: transId,
+          cntr_account_type: "N",
+          cntr_account_num: "1675750816",
+          dps_print_content: "쇼핑몰환불",
           fintech_use_num: fin_use_num,
-          tran_dtime: "20200714142907",
+          wd_print_content: "오픈뱅킹출금",
+          tran_amt: amount,
+          tran_dtime: "20200720114100",
+          req_client_name: "홍길동",
+          req_client_num: "HONGGILDONG1234",
+          transfer_purpose: "ST",
+          req_client_fintech_use_num: "199159919057870971744807",
+          recv_client_name: "홍길동",
+          recv_client_bank_code: "097",
+          recv_client_account_num: "1675750816",
         },
       };
 
       request(option, function (error, response, body) {
-        var listResult = JSON.parse(body);
-        console.log(listResult);
-        res.json(listResult);
+        console.log(body);
+        res.json(body);
       });
     }
   });
