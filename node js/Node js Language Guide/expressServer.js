@@ -271,13 +271,11 @@ app.post("/withdraw", auth, function (req, res) {
   var fin_use_num = req.body.fin_use_num;
   var amount = req.body.amount;
   var to_fin_use_num = req.body.to_fin_use_num;
-  console.log("받아온 데이터", userId, fin_use_num, amount, to_fin_use_num);
+  console.log("유저 아이디, 출금할 핀테크 번호, 입금할 핀테크 번호,", userId, fin_use_num, amount, to_fin_use_num);
 
   var sql = "SELECT * FROM user WHERE id = ?";
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "T991641630U" + countnum; //이용기과번호 본인것 입력
-  console.log("유저 아이디, 핀테크 번호: ", userId, fin_use_num)
-  console.log("transId: ", transId);
 
   connection.query(sql, [userId], function (err, results) {
     if (err) {
@@ -304,16 +302,56 @@ app.post("/withdraw", auth, function (req, res) {
           req_client_name: "홍길동",
           req_client_num: "HONGGILDONG1234",
           transfer_purpose: "ST",
-          req_client_fintech_use_num: "199159919057870971744807",
+          req_client_fintech_use_num: "199164163057885126705688",
           recv_client_name: "홍길동",
           recv_client_bank_code: "097",
           recv_client_account_num: "1675750816",
         },
       };
 
-      request(option, function (error, response, body) {
+      request(option, function (err, response, body) {
         console.log(body);
-        res.json(body);
+        var countnum2 = Math.floor(Math.random() * 1000000000) + 1;
+        var transId2 = "T991641630U" + countnum2; //이용기과번호 본인것 입력
+
+        var option = {
+          method: "POST",
+          url:
+            "https://testapi.openbanking.or.kr/v2.0/transfer/deposit/fin_num",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer " +
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUOTkxNjQxNjMwIiwic2NvcGUiOlsib29iIl0sImlzcyI6Imh0dHBzOi8vd3d3Lm9wZW5iYW5raW5nLm9yLmtyIiwiZXhwIjoxNjAzMDg2MDg1LCJqdGkiOiJmMmI3MjZkOS02OWY3LTRmYmItYjE1ZS1lMjU0OTY5OWU2NzUifQ.fI2wmjCMstRaJQZm0dw0KE2GcIeQFCrDc8mkT9vmuvw",
+          },
+          //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+          json: {
+            cntr_account_type: "N",
+            cntr_account_num: "1675750816",
+            wd_pass_phrase: "NONE",
+            wd_print_content: "환불금액",
+            name_check_option: "on",
+            tran_dtime: "20200721151900",
+            req_cnt: "1",
+            req_list: [
+              {
+                tran_no: "1",
+                bank_tran_id: transId2,
+                fintech_use_num: to_fin_use_num,
+                print_content: "쇼핑몰환불",
+                tran_amt: amount,
+                req_client_name: "홍길동",
+                req_client_num: "HONGGILDONG1234",
+                req_client_fintech_use_num: fin_use_num,
+                transfer_purpose: "ST",
+              },
+            ],
+          },
+        };
+        request(option, function (error, response, body) {
+          console.log(body);
+          res.json(body);
+        });
       });
     }
   });
@@ -331,3 +369,4 @@ app.listen(3000, function () {
   // let minutes = ("00" + today.getMinutes()).slice(-2);  // 분
   // let seconds = ("00" + today.getSeconds()).slice(-2);  // 초
   // let tranDime = "" + year + month + day + hours + minutes + seconds;
+
