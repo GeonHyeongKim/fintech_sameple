@@ -265,6 +265,46 @@ app.post("/transactionList", auth, function (req, res) {
   });
 });
 
+app.post("/withdraw", auth, function (req, res) {
+  // 출금이체 코드 작성
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num;
+  var sql = "SELECT * FROM user WHERE id = ?";
+  var countnum = Math.floor(Math.random() * 1000000000) + 1;
+  var transId = "T991641630U" + countnum; //이용기과번호 본인것 입력
+
+  console.log("유저 아이디, 핀테크 번호: ", userId, fin_use_num)
+  console.log("transId: ", transId);
+
+  connection.query(sql, [userId], function (err, results) {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      var option = {
+        method: "POST",
+        url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
+        headers: {
+          Authorization: "Bearer " + results[0].accesstoken,
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          bank_tran_id: transId,
+          fintech_use_num: fin_use_num,
+          tran_dtime: "20200714142907",
+        },
+      };
+
+      request(option, function (error, response, body) {
+        var listResult = JSON.parse(body);
+        console.log(listResult);
+        res.json(listResult);
+      });
+    }
+  });
+})
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
